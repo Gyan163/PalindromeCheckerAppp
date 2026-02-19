@@ -1,36 +1,48 @@
-import java.util.Scanner;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Stack;
+import java.util.Scanner;
 
-public class PalindromeStack {
+public class PalindromeCheck {
+
     public static void main(String[] args) {
+
         Scanner sc = new Scanner(System.in);
+        System.out.print("Enter a word: ");
+        String word = sc.nextLine();
 
-        System.out.print("Enter a string: ");
-        String input = sc.nextLine();
+        // Convert to lowercase (optional – makes it case insensitive)
+        word = word.toLowerCase();
 
-        Stack<Character> stack = new Stack<>();
+        Queue<Character> queue = new LinkedList<>();  // FIFO
+        Stack<Character> stack = new Stack<>();       // LIFO
 
-        // Push characters into stack
-        for (int i = 0; i < input.length(); i++) {
-            stack.push(input.charAt(i));
+        // Step 1: Enqueue and Push characters
+        for (int i = 0; i < word.length(); i++) {
+            char ch = word.charAt(i);
+            queue.add(ch);   // Enqueue
+            stack.push(ch);  // Push
         }
 
         boolean isPalindrome = true;
 
-        // Pop and compare
-        for (int i = 0; i < input.length(); i++) {
-            char poppedChar = stack.pop();
-            if (input.charAt(i) != poppedChar) {
+        // Step 2: Compare dequeue and pop
+        while (!queue.isEmpty()) {
+
+            char fromQueue = queue.remove();  // Dequeue
+            char fromStack = stack.pop();     // Pop
+
+            if (fromQueue != fromStack) {
                 isPalindrome = false;
                 break;
             }
         }
 
-        // Print result
+        // Step 3: Display result
         if (isPalindrome) {
-            System.out.println("The string is a palindrome.");
+            System.out.println(word + " is a Palindrome.");
         } else {
-            System.out.println("The string is NOT a palindrome.");
+            System.out.println(word + " is NOT a Palindrome.");
         }
 
         sc.close();
