@@ -1,7 +1,16 @@
-public class palindromecheckerapp {
+public class UseCase2PalindromeCheckerApp{
     public static void main(String[] args) {
-        System.out.println("Welcome to the palindrome checker management system");
-        System.out.println("Version:1.0");
-        System.out.println("System Initialized sucessfully");git checkout -b develop
+        String text = "madam";
+        boolean isPalindrome = true;
+
+        for (int i = 0; i < text.length()/2;i++) {
+            if(text.charAt(i)!=text.charAt(text.length()-1-i)) {
+                isPalindrome = false;
+                break;
+            }
+        }
+        System.out.println("input text:"+text);
+        System.out.println("is it Palindrome? :" + isPalindrome);
     }
 }
+
