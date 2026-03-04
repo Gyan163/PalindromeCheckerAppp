@@ -1,29 +1,45 @@
 import java.util.Scanner;
+import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
-public class UC10_CaseInsensitiveSpaceIgnoredPalindrome {
+public class PalindromeCheckerApp {
 
-    // Method for UC10
-    public static boolean isPalindrome(String input) {
+    // 1️⃣ Simple Reverse Method
+    public static boolean reverseMethod(String input) {
+        String reversed = new StringBuilder(input).reverse().toString();
+        return input.equals(reversed);
+    }
 
-        // Step 1: Normalize string
-        // Convert to lowercase
-        input = input.toLowerCase();
+    // 2️⃣ Stack Method
+    public static boolean stackMethod(String input) {
+        Stack<Character> stack = new Stack<>();
 
-        // Remove all spaces using regex
-        input = input.replaceAll("\\s+", "");
-
-        // Step 2: Check palindrome
-        int left = 0;
-        int right = input.length() - 1;
-
-        while (left < right) {
-            if (input.charAt(left) != input.charAt(right)) {
-                return false;
-            }
-            left++;
-            right--;
+        for (char c : input.toCharArray()) {
+            stack.push(c);
         }
 
+        for (char c : input.toCharArray()) {
+            if (c != stack.pop()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // 3️⃣ Deque Method
+    public static boolean dequeMethod(String input) {
+        Deque<Character> deque = new ArrayDeque<>();
+
+        for (char c : input.toCharArray()) {
+            deque.addLast(c);
+        }
+
+        while (deque.size() > 1) {
+            if (deque.removeFirst() != deque.removeLast()) {
+                return false;
+            }
+        }
         return true;
     }
 
@@ -31,15 +47,35 @@ public class UC10_CaseInsensitiveSpaceIgnoredPalindrome {
 
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("=== UC10: Case-Insensitive & Space-Ignored Palindrome ===");
+        System.out.println("==== Palindrome Checker App ====");
+        System.out.println("UC13: Performance Comparison");
+        System.out.println();
+
         System.out.print("Enter a string: ");
         String input = sc.nextLine();
 
-        if (isPalindrome(input)) {
-            System.out.println("It is a Palindrome.");
-        } else {
-            System.out.println("It is NOT a Palindrome.");
-        }
+        // Reverse Method Timing
+        long start1 = System.nanoTime();
+        boolean result1 = reverseMethod(input);
+        long end1 = System.nanoTime();
+        long time1 = end1 - start1;
+
+        // Stack Method Timing
+        long start2 = System.nanoTime();
+        boolean result2 = stackMethod(input);
+        long end2 = System.nanoTime();
+        long time2 = end2 - start2;
+
+        // Deque Method Timing
+        long start3 = System.nanoTime();
+        boolean result3 = dequeMethod(input);
+        long end3 = System.nanoTime();
+        long time3 = end3 - start3;
+
+        System.out.println("\n--- Results ---");
+        System.out.println("Reverse Method: " + result1 + " | Time: " + time1 + " ns");
+        System.out.println("Stack Method  : " + result2 + " | Time: " + time2 + " ns");
+        System.out.println("Deque Method  : " + result3 + " | Time: " + time3 + " ns");
 
         sc.close();
     }
